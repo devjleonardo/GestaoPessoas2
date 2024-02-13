@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="template.xhtml">
+    <ui:define name="titulo">Formulário de Cadastro</ui:define>
+
+    <ui:define name="conteudo">
+        <div class="card crud-demo">
+            <h:form id="form">
+                <p:growl id="messages" showDetail="true" />
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <script type="text/javascript">
+                            function aplicarMascara() {
+                                $("#dialogs\\:cpf").mask("000.000.000-00", { reverse: false });
+                            }
+                        </script>
+
+                        <p:commandButton
+                                value="Novo"
+                                icon="pi pi-plus"
+                                actionListener="#{pessoaFisicaController.iniciarCadastroPessoaFisica}"
+                                update=":dialogs:detalhes-pessoa-fisica-content"
+                                oncomplete="PF('cadastrarPessoaFisicaDialog').show(); aplicarMascara();"
+                                styleClass="ui-button-success"
+                                style="margin-right: 0.5rem;">
+                            <p:resetInput target=":dialogs:detalhes-pessoa-fisica-content" />
+                        </p:commandButton>
+                    </p:toolbarGroup>
+
+                    <p:toolbarGroup align="right">
+                        <p:linkButton
+                                value="Acessar a documentação da API"
+                                onclick="window.open('http://localhost:8080/swagger-ui/index.html', '_blank');"
+                                styleClass="ui-button-info" />
+                    </p:toolbarGroup>
+                </p:toolbar>
+
+                <p:dataTable
+                        id="dt-pessoas-fisicas"
+                        widgetVar="dtPessoasFisicas"
+                        var="pessoaFisica"
+                        value="#{pessoaFisicaController.pessoasFisicas}"
+                        reflow="true"
+                        styleClass="pessoas-fisicas-table"
+                        rowKey="#{pessoaFisica.id}"
+                        paginator="true"
+                        rows="10"
+                        rowSelectMode="add"
+                        paginatorPosition="bottom">
+                    <f:facet name="header">
+                        <div class="pessoas-fisicas-table-header">
+                            <span style="font-weight: bold;">Pesquisar pessoa física</span>
+                            <span class="filter-container ui-input-icon-left">
+                                    <i class="pi pi-search"></i>
+                                    <p:inputText id="globalFilter"
+                                                 onkeyup="PF('dtPessoasFisicas').filter()"
+                                                 placeholder="Pesquisar" />
+                                </span>
+                        </div>
+                    </f:facet>
+                    <p:column selectionMode="multiple" exportable="false"></p:column>
+
+                    <p:column headerText="Código" sortBy="#{pessoaFisica.id}" filterBy="#{pessoaFisica.id}">
+                        <h:outputText value="#{pessoaFisica.id}" />
+                    </p:column>
+
+                    <p:column headerText="Nome" sortBy="#{pessoaFisica.nome}" filterBy="#{pessoaFisica.nome}">
+                        <h:outputText value="#{pessoaFisica.nome}" />
+                    </p:column>
+
+                    <p:column headerText="CPF" sortBy="#{pessoaFisica.cpf}" filterBy="#{pessoaFisica.cpf}">
+                        <h:outputText value="#{pessoaFisicaController.formatarCPF(pessoaFisica.cpf)}" />
+                    </p:column>
+
+                    <p:column headerText="Email" sortBy="#{pessoaFisica.email}" filterBy="#{pessoaFisica.email}">
+                        <h:outputText value="#{pessoaFisica.email}" />
+                    </p:column>
+
+                    <p:column exportable="false">
+                        <p:commandButton
+                                icon="pi pi-pencil"
+                                update=":dialogs:detalhes-pessoa-fisica-content"
+                                oncomplete="PF('cadastrarPessoaFisicaDialog').show(); aplicarMascara()"
+                                styleClass="edit-button rounded-button ui-button-success"
+                                process="@this">
+                            <f:setPropertyActionListener value="#{pessoaFisica}"
+                                                         target="#{pessoaFisicaController.pessoaFisica}"/>
+                            <p:resetInput target=":dialogs:detalhes-pessoa-fisica-content" />
+                        </p:commandButton>
+
+                        <p:commandButton class="ui-button-warning rounded-button"
+                                         icon="pi pi-trash"
+                                         process="@this"
+                                         oncomplete="PF('excluirPessoaFisicaConfirmDialog').show()">
+                            <f:setPropertyActionListener value="#{pessoaFisica}"
+                                                         target="#{pessoaFisicaController.pessoaFisica}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+
+            <h:form id="dialogs">
+                <p:dialog header="Detalhes da Pessoa Física"
+                          showEffect="fade"
+                          modal="true"
+                          widgetVar="cadastrarPessoaFisicaDialog"
+                          responsive="true"
+                          width="800">
+                    <p:outputPanel id="detalhes-pessoa-fisica-content" class="ui-fluid">
+                        <p:outputPanel rendered="#{not empty pessoaFisicaController.pessoaFisica}">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <div class="field">
+                                        <p:outputLabel for="nome">Nome</p:outputLabel>
+                                        <p:inputText
+                                                id="nome"
+                                                value="#{pessoaFisicaController.pessoaFisica.nome}"
+                                                requiredMessage="Por favor, preencha o nome"
+                                                required="true"
+                                                styleClass="form-control" />
+                                        <p:message for="nome" styleClass="mt-2" style="margin-left: 0 !important;" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <div class="field">
+                                        <p:outputLabel for="cpf">CPF</p:outputLabel>
+                                        <p:inputText
+                                                id="cpf"
+                                                value="#{pessoaFisicaController.pessoaFisica.cpf}"
+                                                placeholder="000.000.000-00"
+                                                minlength="14"
+                                                maxlength="14"
+                                                required="true"
+                                                requiredMessage="Por favor, preencha o CPF"
+                                                styleClass="form-control">
+                                            <f:validateLength minimum="14" maximum="14"/>
+                                        </p:inputText>
+                                        <p:message for="cpf" styleClass="mt-2" style="margin-left: 0 !important;" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <div class="field">
+                                        <p:outputLabel for="email">Email</p:outputLabel>
+                                        <p:inputText
+                                                id="email"
+                                                value="#{pessoaFisicaController.pessoaFisica.email}"
+                                                placeholder="Digite seu endereço de e-mail"
+                                                required="true"
+                                                requiredMessage="Por favor, preencha o e-mail"
+                                                validatorMessage="E-mail inválido"
+                                                styleClass="form-control">
+                                            <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]
+                                                                     +(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                        </p:inputText>
+                                        <p:message for="email" styleClass="mt-2" style="margin-left: 0 !important;" />
+                                    </div>
+                                </div>
+                            </div>
+                        </p:outputPanel>
+                    </p:outputPanel>
+
+                    <f:facet name="footer">
+                        <p:commandButton
+                                value="Salvar"
+                                icon="pi pi-check"
+                                actionListener="#{pessoaFisicaController.processarOperacaoCadastroOuAtualizacao()}"
+                                update="detalhes-pessoa-fisica-content"
+                                process="detalhes-pessoa-fisica-content @this" />
+                        <p:commandButton value="Cancelar"
+                                         icon="pi pi-times"
+                                         onclick="PF('cadastrarPessoaFisicaDialog').hide()"
+                                         class="ui-button-secondary"
+                                         type="button" />
+                    </f:facet>
+                </p:dialog>
+
+                <p:confirmDialog
+                        widgetVar="excluirPessoaFisicaConfirmDialog"
+                        showEffect="fade" width="300"
+                        message="Você tem certeza que deseja excluir esta pesso físca?"
+                        header="Confirmar"
+                        severity="warn">
+                    <p:commandButton
+                            value="Sim"
+                            icon="pi pi-check"
+                            actionListener="#{pessoaFisicaController.removerPessoaFisicaSelecionada()}"
+                            process="@this"
+                            oncomplete="PF('excluirPessoaFisicaConfirmDialog').hide()" />
+                    <p:commandButton value="Não"
+                                     type="button"
+                                     icon="pi pi-times"
+                                     onclick="PF('excluirPessoaFisicaConfirmDialog').hide()"
+                                     styleClass="ui-button-secondary" />
+                </p:confirmDialog>
+
+                <p:button value="Voltar"
+                          outcome="index.xhtml"
+                          icon="pi pi-arrow-left"
+                          styleClass="ui-button-secondary" />
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

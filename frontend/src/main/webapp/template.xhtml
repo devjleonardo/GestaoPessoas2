@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>
+        <title>#{titulo}</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+
+        <h:outputStylesheet library="primefaces" name="themes/south-street/theme.css"/>
+        <h:outputStylesheet library="primefaces" name="core/core.css"/>
+        <h:outputScript library="primefaces" name="jquery/jquery.js"/>
+        <h:outputScript library="primefaces" name="core/core.js"/>
+        <h:outputScript library="primefaces" name="components/components.js"/>
+
+        <script type="text/javascript"
+                src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js">
+        </script>
+    </h:head>
+
+    <h:body>
+        <ui:insert name="conteudo"/>
+    </h:body>
+</html>

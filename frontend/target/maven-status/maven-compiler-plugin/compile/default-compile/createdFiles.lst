@@ -1,0 +1,4 @@
+br\com\devjleonardo\gestaopessoas\frontend\FrontendApplication.class
+br\com\devjleonardo\gestaopessoas\frontend\util\HttpConfigConstants.class
+br\com\devjleonardo\gestaopessoas\frontend\controller\PessoaFisicaController.class
+br\com\devjleonardo\gestaopessoas\frontend\dto\PessoaFisicaDTO.class

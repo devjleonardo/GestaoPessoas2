@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                                  http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd"
+              version="2.3">
+    <application>
+        <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+    </application>
+
+<!--    <managed-bean>-->
+<!--        <managed-bean-name>pessoaFisicaCrudBean</managed-bean-name>-->
+
+<!--        <managed-bean-class>-->
+<!--            com.jlcb.gestaopessoasweb.api.beans.pessoafisica.PessoaFisicaCrudBean-->
+<!--        </managed-bean-class>-->
+
+<!--        <managed-bean-scope>view</managed-bean-scope>-->
+<!--    </managed-bean>-->
+
+<!--    <managed-bean>-->
+<!--        <managed-bean-name>pessoaJuridicaCrudBean</managed-bean-name>-->
+
+<!--        <managed-bean-class>-->
+<!--            com.jlcb.gestaopessoasweb.api.beans.pessoajuridica.PessoaJuridicaCrudBean-->
+<!--        </managed-bean-class>-->
+
+<!--        <managed-bean-scope>view</managed-bean-scope>-->
+<!--    </managed-bean>-->
+</faces-config>
